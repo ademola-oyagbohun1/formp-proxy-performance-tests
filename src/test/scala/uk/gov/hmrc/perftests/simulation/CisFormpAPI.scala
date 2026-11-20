@@ -29,7 +29,6 @@ trait CisFormpAPI extends PerformanceTestRunner with BaseRequests {
         getAllMonthlyReturns,
         getUnsubmittedMonthlyReturns,
         getSubmittedMonthlyReturns,
-        postUpdateMonthlyReturn,
         getMonthlyReturnForEdit,
         getCompleteMonthlyReturnData,
         getSubmittedMonthlyReturnData,
@@ -48,7 +47,6 @@ trait CisFormpAPI extends PerformanceTestRunner with BaseRequests {
   val cisSubcontractorFormP: List[ActionBuilder] =
     getAuthToken(() => authPayloadCisOrg) ++
       List[ActionBuilder](
-        postCreateSubcontractor,
         getSubcontractorList("872")
       )
 
@@ -69,7 +67,6 @@ trait CisFormpAPI extends PerformanceTestRunner with BaseRequests {
         getLastVerificationBatch("872"),
         postUpdateSubmissionFromChrisResponse,
         getSubmissionAndVerificationBatchRecord,
-        postProceedVerification,
         getSubmittedVerifications,
         postUpdateVerificationSubmission,
         getSubmissionWithVerificationBatchByRefs("872", "2")

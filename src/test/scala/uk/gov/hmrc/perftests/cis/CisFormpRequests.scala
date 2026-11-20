@@ -30,7 +30,6 @@ object CisFormpRequests extends ServicesConfiguration with BaseRequests {
   val getMonthlyReturnsUrl                        = s"$formpUrl/monthly-returns"
   val getUnsubmittedReturnsUrl                    = s"$formpUrl/cis/retrieve-unsubmitted-monthly-returns"
   val getSubmittedReturnsUrl                      = s"$formpUrl/cis/retrieve-submitted-monthly-returns"
-  val postUpdateMonthlyReturnUrl                  = s"$formpUrl/cis/monthly-return/update"
   val getMonthlyReturnForEditUrl                  = s"$formpUrl/cis/monthly-return-edit"
   val getCompleteMonthlyReturnUrl                 = s"$formpUrl/cis/monthly-return-complete"
   val getSubmittedMonthlyReturnsDataUrl           = s"$formpUrl/cis/retrieve-submitted-monthly-returns-data"
@@ -39,7 +38,6 @@ object CisFormpRequests extends ServicesConfiguration with BaseRequests {
   val getSchemeInfoUrl                            = s"$formpUrl/scheme"
   val postUpdateSchemeUrl                         = s"$formpUrl/scheme/update"
   // Subcontractor URLs
-  val postCreateSubcontractorUrl                  = s"$formpUrl/cis/subcontractor/create-and-update"
   val getSubcontractorListUrl                     = s"$formpUrl/cis/subcontractors"
   // Submission URLs
   val postUpdateSubmissionUrl                     = s"$formpUrl/submissions/update" // Monthly Return
@@ -55,7 +53,6 @@ object CisFormpRequests extends ServicesConfiguration with BaseRequests {
   val getLastVerificationBatchUrl                 = s"$formpUrl/cis/verification-batch/last"
   val postUpdateSubmissionFromChrisResponseUrl    = s"$formpUrl/cis/verification/response/process"
   val getSubmissionAndVerificationBatchRecordUrl  = s"$formpUrl/cis/verification/submission-batch"
-  val postProceedVerificationUrl                  = s"$formpUrl/cis/verification/proceed"
   val getSubmittedVerificationsUrl                = s"$formpUrl/cis/verification/submitted-verifications"
   val postUpdateVerificationSubmissionUrl         = s"$formpUrl/cis/verification/submission/update"
   val getSubmissionWithVerificationBatchByRefsUrl = s"$formpUrl/cis/verification/submission-batch"
@@ -78,10 +75,6 @@ object CisFormpRequests extends ServicesConfiguration with BaseRequests {
 
     utr
   }
-
-  val subcontractorType: List[String]               = List("soletrader", "company", "partnership", "trust")
-  private def selectRandomSubcontractorType: String = subcontractorType(Random.nextInt(subcontractorType.length))
-  val randomPhoneNumber: String                     = "0" + List.fill(10)(Random.nextInt(10)).mkString
 
   val submissionStatus: List[String]               = List(
     "SUBMITTED",
@@ -138,28 +131,6 @@ object CisFormpRequests extends ServicesConfiguration with BaseRequests {
       )
       .asJson
       .check(status.is(200))
-
-  val postUpdateMonthlyReturn: HttpRequestBuilder =
-    http("POST Update monthly return")
-      .post(postUpdateMonthlyReturnUrl)
-      .headers(commonHeaders)
-      .body(
-        StringBody(
-          """{
-            |  "instanceId": "1034",
-            |  "taxYear": 2026,
-            |  "taxMonth": 11,
-            |  "amendment": "N",
-            |  "decInformationCorrect": "Y",
-            |  "decNilReturnNoPayments": "Y",
-            |  "nilReturnIndicator": "Y",
-            |  "status": "STARTED",
-            |  "version": 1
-            |}""".stripMargin
-        )
-      )
-      .asJson
-      .check(status.is(204))
 
   val getMonthlyReturnForEdit: HttpRequestBuilder =
     http("GET monthly return for edit")
@@ -257,35 +228,6 @@ object CisFormpRequests extends ServicesConfiguration with BaseRequests {
       .asJson
       .check(status.is(200))
   }
-
-  val postCreateSubcontractor: HttpRequestBuilder =
-    http("POST create and update subcontractor")
-      .post(postCreateSubcontractorUrl)
-      .headers(commonHeaders)
-      .body(
-        StringBody(
-          s"""{
-         |  "cisId": "1020",
-         |  "subcontractorType": "$selectRandomSubcontractorType",
-         |  "utr": "$generateValidUtr",
-         |  "nino": "AA123456A",
-         |  "firstName": "John",
-         |  "secondName": "Q",
-         |  "surname": "Smith",
-         |  "tradingName": "ACME",
-         |  "addressLine1": "1 Main Street",
-         |  "city": "London",
-         |  "county": "Greater London",
-         |  "country": "United Kingdom",
-         |  "postcode": "AA1 1AA",
-         |  "phoneNumber": "$randomPhoneNumber",
-         |  "mobilePhoneNumber": "$randomPhoneNumber",
-         |  "worksReferenceNumber": "34567"
-         |}""".stripMargin
-        )
-      )
-      .asJson
-      .check(status.is(204))
 
   def getSubcontractorList(cisId: String): HttpRequestBuilder =
     http("GET Subcontractor list")
@@ -452,24 +394,6 @@ object CisFormpRequests extends ServicesConfiguration with BaseRequests {
       )
       .asJson
       .check(status.is(200))
-
-  val postProceedVerification: HttpRequestBuilder =
-    http("POST Proceed verification")
-      .post(postProceedVerificationUrl)
-      .headers(commonHeaders)
-      .body(
-        StringBody(
-          """{
-             |  "instanceId": "864",
-             |  "verificationBatchResourceRef": 3,
-             |  "verificationResourceRef": 2,
-             |  "proceed": true,
-             |  "taxTreatment": "gross"
-             |}""".stripMargin
-        )
-      )
-      .asJson
-      .check(status.is(204))
 
   val getSubmittedVerifications: HttpRequestBuilder =
     http("GET Submitted verifications")
