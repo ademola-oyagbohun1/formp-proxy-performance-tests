@@ -146,9 +146,9 @@ object CisFormpRequests extends ServicesConfiguration with BaseRequests {
       .body(
         StringBody(
           """{
-            |  "instanceId": "872",
+            |  "instanceId": "1034",
             |  "taxYear": 2026,
-            |  "taxMonth": 10,
+            |  "taxMonth": 11,
             |  "amendment": "N",
             |  "decInformationCorrect": "Y",
             |  "decNilReturnNoPayments": "Y",
@@ -265,7 +265,7 @@ object CisFormpRequests extends ServicesConfiguration with BaseRequests {
       .body(
         StringBody(
           s"""{
-         |  "cisId": "872",
+         |  "cisId": "1020",
          |  "subcontractorType": "$selectRandomSubcontractorType",
          |  "utr": "$generateValidUtr",
          |  "nino": "AA123456A",
@@ -460,9 +460,9 @@ object CisFormpRequests extends ServicesConfiguration with BaseRequests {
       .body(
         StringBody(
           """{
-             |  "instanceId": "872",
-             |  "verificationBatchResourceRef": 2,
-             |  "verificationResourceRef": 3,
+             |  "instanceId": "864",
+             |  "verificationBatchResourceRef": 3,
+             |  "verificationResourceRef": 2,
              |  "proceed": true,
              |  "taxTreatment": "gross"
              |}""".stripMargin
